@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 public class DirectedAcyclicGraph {
-	Map<String, Node> listOfNodes;
-	Node s, d, head;
+	Map<String, Node> listOfNodes; // Store all the nodes in the graph
+	Node s, d, head;	// Pointers for source, destination and head. Head is the first point in the map with 0 inward edges
 
 	public DirectedAcyclicGraph() {
 		// TODO Auto-generated constructor stub
@@ -15,7 +15,8 @@ public class DirectedAcyclicGraph {
 	}
 
 	public boolean addEdge(String source, String destination) {
-
+		
+		//creating new nodes for source and destination if they don't exist
 		if (listOfNodes.containsKey(source)) {
 			s = listOfNodes.get(source);
 		} else {
@@ -30,6 +31,7 @@ public class DirectedAcyclicGraph {
 			listOfNodes.put(destination, d);
 		}
 
+		// Checking for cycle in the graph based on this edge
 		if (!checkCycle(s, d))
 			return false;
 		
@@ -37,10 +39,12 @@ public class DirectedAcyclicGraph {
 	}
 
 	public boolean checkCycle(Node source, Node dest) {
-
+		
+		// Add edge to the graph
 		source.out.add(d);
 		dest.in.add(s);
-			
+		
+		// Find the head
 		for (Map.Entry<String, Node> entry : listOfNodes.entrySet()) {
 			if (entry.getValue().in.size() == 0) {
 				head = entry.getValue();
@@ -48,19 +52,24 @@ public class DirectedAcyclicGraph {
 			}
 		}
 
+		// To check for cycle keep track of all the nodes visited in depth first search traversal
 		List<Node> nodesVisited = new ArrayList<Node>();
 
 		nodesVisited.add(head);
 
+		//recursive call to find cycles. In case DFS returns true the edge mainains the constraints of DFS and need not be removed.
 		if (depthFirstSearch(head, nodesVisited))
 			return true;
 		else {
+			
+			// remove the edge since it leads to a cycle.
 			s.out.remove(d);
 			d.in.remove(s);
 			return false;
 		}
 	}
 
+	// Recursive function for DFS traversal. Visit all the out edges of each node. If a single node is already present the false propagates all the way to the first call.
 	public boolean depthFirstSearch(Node a, List<Node> nodesVistied) {
 		if (a.out.size() == 0)
 			return true;
