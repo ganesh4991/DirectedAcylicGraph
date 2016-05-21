@@ -12,13 +12,16 @@ public class Main {
 			int n=o.nextInt();
 			if(n==2)
 				break;
-			else{
+			else if (n==1){
 				System.out.println("Enter Source");
 				String source=o.next();
 				System.out.println("Enter Destination");
 				String destination=o.next();
 				// call to add Edge
 				System.out.println(d.addEdge(source, destination));
+			}
+			else{
+				System.out.println("-----Enter correct option----");
 			}
 		}
 		o.close();
