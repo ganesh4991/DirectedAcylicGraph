@@ -66,7 +66,6 @@ public class DirectedAcyclicGraph {
 			return true;
 		else {
 			for (Node i : a.out) {
-				//System.out.println("Parent "+a.name+" Child "+i.name);
 				if (nodesVistied.contains(i))
 					return false;
 				nodesVistied.add(i);
